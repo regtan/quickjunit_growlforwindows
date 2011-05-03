@@ -1,10 +1,15 @@
-Quick JUnit Plugin for Eclipseの結果をGrowl for windowsに通知するextentionです。
+Quick JUnit Plugin for Eclipseの結果をGrowl for windowsに通知するextensionです。
 
 Quick JUnit Plugin for Eclipse（@kompiro）
 http://quick-junit.sourceforge.jp/
 
 ライセンス
 Quick JUnit Plugin for Eclipseに準じます。（CPL1.0）
+
+ビルドするときの注意
+libgrowl-0.2.0.jarを別途準備してください。
+http://http://sourceforge.net/projects/libgrowl/
+
 
 確認した環境
 Winddows XP(SP3) 32bit
