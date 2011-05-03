@@ -1,0 +1,22 @@
+Quick JUnit Plugin for Eclipseの結果をGrowl for windowsに通知するextentionです。
+
+Quick JUnit Plugin for Eclipse（@kompiro）
+http://quick-junit.sourceforge.jp/
+
+ライセンス
+Quick JUnit Plugin for Eclipseに準じます。（CPL1.0）
+
+確認した環境
+Winddows XP(SP3) 32bit
+Growl v.2.0.6 http://www.growlforwindows.com/
+Eclipse Version: Helios Release(Build id: 20100617-1415)
+quick junit 0.6.0
+
+既知の問題
+・アイコンの指定が固定になっている。
+	カスタマイズしたい場合はC:\quick_junit_icons\以下に表示したい画像ファイルをおいてください
+	tsuiteerror.gif:test error時に表示されるアイコン
+	tsuitefail.gif:test fail時に表示されるアイコン
+	tsuiteok.gif:test ok時に表示されるアイコン
+	なければgrowl for windowsのデフォルトのものが表示されます
+	
