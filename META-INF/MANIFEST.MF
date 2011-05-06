@@ -6,7 +6,7 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: Quick JUnit Project
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: growl_extension.jar,
- libgrowl-0.2.jar
+ growlforwindows4j.jar
 Import-Package: javax.imageio,
  junit.extensions;version="4.5.0",
  org.eclipse.core.runtime,

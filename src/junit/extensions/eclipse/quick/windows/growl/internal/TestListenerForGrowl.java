@@ -1,16 +1,20 @@
 package junit.extensions.eclipse.quick.windows.growl.internal;
 
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.extensions.eclipse.quick.windows.growl.internal.preferences.Preference;
-import net.sf.libgrowl.Application;
-import net.sf.libgrowl.GrowlConnector;
-import net.sf.libgrowl.Notification;
-import net.sf.libgrowl.NotificationType;
 
 import org.eclipse.jdt.junit.ITestRunListener;
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestRunSession;
+import org.kirino.growlforwindows.Application;
+import org.kirino.growlforwindows.GrowlControler;
+import org.kirino.growlforwindows.Notification;
 
 
 @SuppressWarnings("deprecation")
@@ -20,22 +24,26 @@ public class TestListenerForGrowl implements ITestRunListener {
 	private static final String TEST_OK = QUICK_J_UNIT + "Test OK";
 	private static final String TEST_FAILURE = QUICK_J_UNIT + "Test FAILURE";
 	private static final String TEST_ERROR = QUICK_J_UNIT + "Test ERROR";
-	private static final String PATH_IMG_OK = "c:/quick_junit_icons/tsuiteok.gif";
-	private static final String PATH_IMG_FAILURE = "c:/quick_junit_icons/tsuitefail.gif";
-	private static final String PATH_IMG_ERROR = "c:/quick_junit_icons/tsuiteerror.gif";
-
 	public TestListenerForGrowl() {
-		final GrowlConnector growlConnector = new GrowlConnector();
+		final GrowlControler gc = new GrowlControler();
 		final Application quickJunit = new Application(QUICK_J_UNIT);
 
-		final NotificationType notificationTestOk = new NotificationType("TEST_OK",TEST_OK,PATH_IMG_OK);
-		final NotificationType notificationTestFailure = new NotificationType("TEST_FAILURE",TEST_FAILURE,PATH_IMG_FAILURE);
-		final NotificationType notificationTestError = new NotificationType("TEST_ERROR",TEST_ERROR,PATH_IMG_ERROR);
-		final NotificationType[] notificationTypes = new NotificationType[] {notificationTestOk,
-				notificationTestFailure,
-				notificationTestError};
+		final Notification notificationTestOk = new Notification("TEST_OK",TEST_OK,true);
+		final Notification notificationTestFailure = new Notification("TEST_FAILURE",TEST_FAILURE,true);
+		final Notification notificationTestError = new Notification("TEST_ERROR",TEST_ERROR,true);
 
-		growlConnector.register(quickJunit, notificationTypes);
+		List<Notification> notificationList = new ArrayList<Notification>();
+		notificationList.add(notificationTestOk);
+		notificationList.add(notificationTestFailure);
+		notificationList.add(notificationTestError);
+
+		try {
+			gc.registerNotify(quickJunit, notificationList);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		JUnitCore.addTestRunListener(new org.eclipse.jdt.junit.TestRunListener() {
 			private final TemplateParser parser = new TemplateParser();
@@ -44,16 +52,19 @@ public class TestListenerForGrowl implements ITestRunListener {
 				String template = Preference.TEMPLATE.getValue();
 				parser.setTemplate(template);
 				Result testResult = session.getTestResult(true);
-				Notification notification;
 				String parseTemplate = parser.parseTemplate(session);
-				if(Result.ERROR.equals(testResult)){
-					notification = new Notification(quickJunit, notificationTestError, testResult.toString(), parseTemplate);
-				}else if(Result.FAILURE.equals(testResult)){
-					notification = new Notification(quickJunit, notificationTestFailure, testResult.toString(), parseTemplate);
-				}else{
-					notification = new Notification(quickJunit, notificationTestOk, testResult.toString(), parseTemplate);
+				try {
+
+					if(Result.ERROR.equals(testResult)){
+						gc.sendNotify(QUICK_J_UNIT, "TEST_ERROR", testResult.toString(), parseTemplate);
+					}else if(Result.FAILURE.equals(testResult)){
+						gc.sendNotify(QUICK_J_UNIT, "TEST_FAILURE", testResult.toString(), parseTemplate);
+					}else{
+						gc.sendNotify(QUICK_J_UNIT, "TEST_OK", testResult.toString(), parseTemplate);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				growlConnector.notify(notification);
 
 			}
 		});
