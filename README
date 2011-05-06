@@ -1,15 +1,17 @@
 Quick JUnit Plugin for Eclipseの結果をGrowl for windowsに通知するextensionです。
+テストを実行したlocalhostのGrowl for windowsにのみ通知します。
+（Growlの仕様では他のマシンに通知することも可能なのですが・・・）
 
 Quick JUnit Plugin for Eclipse（@kompiro）
 http://quick-junit.sourceforge.jp/
 
 ライセンス
 Quick JUnit Plugin for Eclipseに準じます。（CPL1.0）
+以前はlibgrowl-0.2.jarを含めていましたがライセンスの関係上growlforwindows4j.jarに変更しました。
 
-ビルドするときの注意
-libgrowl-0.2.0.jarを別途準備してください。
-http://http://sourceforge.net/projects/libgrowl/
-
+growlforwindows4jについて
+growlforwindows4jについては以下をご参照ください。
+https://github.com/regtan/growlforwindows4j
 
 確認した環境
 Winddows XP(SP3) 32bit
@@ -18,10 +20,8 @@ Eclipse Version: Helios Release(Build id: 20100617-1415)
 quick junit 0.6.0
 
 既知の問題
-・アイコンの指定が固定になっている。
-	カスタマイズしたい場合はC:\quick_junit_icons\以下に表示したい画像ファイルをおいてください
-	tsuiteerror.gif:test error時に表示されるアイコン
-	tsuitefail.gif:test fail時に表示されるアイコン
-	tsuiteok.gif:test ok時に表示されるアイコン
-	なければgrowl for windowsのデフォルトのものが表示されます
-	
+・ごく稀にregisterがうまくいかない
+	初回起動時にGrowl for windowsにQuick Junitのnotifyを登録する処理にて何も反応がなくなることが
+	あります。Eclipse再起動やGrowl for windowsを再起動してください。
+・アイコンがGrowl for windowsデフォルト（歯車のアイコン）になっている。	
+	何とかしたい・・・
